@@ -25,6 +25,9 @@
   --done:#1d7a5f;
   --done-bg:#e4f3ec;
   --done-line:#a9dcc7;
+  --p0:#2f6fb0;   --p0-bg:#e6f0f9;   --p0-line:#b6d4ec;
+  --p1:#b8860b;   --p1-bg:#fbf1d6;   --p1-line:#e8ce8a;
+  --p2:#c0492e;   --p2-bg:#fae6e0;   --p2-line:#eebfb2;
 }
 *{box-sizing:border-box;margin:0;padding:0}
 body{
@@ -39,6 +42,10 @@ body{
 header{text-align:center;margin-bottom:8px}
 .eyebrow{font-size:14px;color:var(--ink-soft);letter-spacing:1px}
 h1{font-size:28px;font-weight:800;margin:6px 0 4px;letter-spacing:-0.5px}
+.rainbow{
+  width:120px;height:5px;margin:8px auto 6px;border-radius:3px;
+  background:linear-gradient(90deg,#c0492e,#e08a2e,#b8860b,#1d7a5f,#2f6fb0,#5b4b9e);
+}
 .sub{font-size:15px;color:var(--ink-soft)}
 
 .tabs{display:flex;gap:8px;margin:24px 0 20px;background:#f0ebe0;padding:6px;border-radius:14px}
@@ -65,33 +72,73 @@ h1{font-size:28px;font-weight:800;margin:6px 0 4px;letter-spacing:-0.5px}
 }
 .how b{color:var(--ink);font-weight:700}
 
+/* 지붕: 집 모양 삼각형 */
+.house{max-width:560px;margin:0 auto 16px}
 .roof{
-  border:1.5px solid var(--line-strong);border-radius:14px;
-  padding:16px;text-align:center;margin-bottom:14px;
-  background:var(--card);transition:all .3s;
+  position:relative;
+  height:130px;margin:0 auto -1px;
+  clip-path:polygon(50% 0, 100% 100%, 0 100%);
+  background:var(--card);
+  border:none;
+  display:flex;flex-direction:column;align-items:center;justify-content:flex-end;
+  padding-bottom:12px;text-align:center;
+  transition:all .3s;
+  box-shadow:inset 0 0 0 1.5px var(--line-strong);
 }
-.roof.done{background:var(--done-bg);border-color:var(--done-line)}
-.roof .rl{font-size:13px;color:var(--ink-faint);font-weight:600}
-.roof.done .rl{color:var(--done)}
-.roof .rt{font-size:17px;font-weight:800;margin-top:4px;color:var(--ink-faint)}
-.roof.done .rt{color:var(--done)}
+.roof::before{
+  content:"";position:absolute;inset:0;
+  clip-path:polygon(50% 0, 100% 100%, 0 100%);
+  background:transparent;transition:background .4s;z-index:-1;
+}
+.roof.done{
+  box-shadow:none;
+  background:#c0261f;
+}
+.roof .rl{font-size:12px;color:var(--ink-faint);font-weight:800;max-width:60%}
+.roof.done .rl{color:#fff;opacity:.95}
+.roof .rt{font-size:14.5px;font-weight:900;margin-top:3px;color:var(--ink-soft);max-width:62%;line-height:1.35}
+.roof.done .rt{color:#fff}
 
-.down{text-align:center;color:var(--ink-faint);font-size:18px;margin:2px 0 10px}
-
-.walls{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-bottom:16px}
-.wall{display:flex;flex-direction:column;gap:7px}
+.walls{display:grid;grid-template-columns:1fr 1fr 1fr;gap:0;margin-bottom:16px;
+  border:1.5px solid var(--line-strong);border-radius:0 0 4px 4px;overflow:hidden;background:var(--card)}
+.wall{display:flex;flex-direction:column;gap:0;padding:8px;border-right:1.5px solid var(--line-strong)}
+.wall:last-child{border-right:none}
+.wall .brick{margin-top:7px}
+.wall.built.p0{background:linear-gradient(180deg,transparent,var(--p0-bg))}
+.wall.built.p1{background:linear-gradient(180deg,transparent,var(--p1-bg))}
+.wall.built.p2{background:linear-gradient(180deg,transparent,var(--p2-bg))}
 .wsum{
-  border:1.5px solid var(--line-strong);border-radius:12px;
+  border:1.5px solid var(--line-strong);border-radius:8px;
   padding:10px 8px;text-align:center;background:var(--card);
   transition:all .3s;min-height:74px;
   display:flex;flex-direction:column;justify-content:center;
 }
 .wsum.done{background:var(--key-bg);border-color:var(--key-line)}
-.wsum .wl{font-size:16px;font-weight:800}
+.wsum .wl{font-size:17px;font-weight:900}
 .wsum .wr{font-size:11px;color:var(--ink-faint);margin-top:1px}
 .wsum .ws{font-size:12px;color:var(--ink-faint);margin-top:5px;line-height:1.4}
 .wsum.done .ws{color:var(--ink);font-weight:600}
 .wsum.done .wl{color:var(--key)}
+
+/* 처음·중간·끝 부분별 색 */
+.p0 .wl{color:var(--p0)}
+.p1 .wl{color:var(--p1)}
+.p2 .wl{color:var(--p2)}
+.p0 .wsum{border-color:var(--p0-line)}
+.p1 .wsum{border-color:var(--p1-line)}
+.p2 .wsum{border-color:var(--p2-line)}
+.p0 .wsum.done{background:var(--p0-bg);border-color:var(--p0-line)}
+.p1 .wsum.done{background:var(--p1-bg);border-color:var(--p1-line)}
+.p2 .wsum.done{background:var(--p2-bg);border-color:var(--p2-line)}
+.p0 .wsum.done .wl{color:var(--p0)}
+.p1 .wsum.done .wl{color:var(--p1)}
+.p2 .wsum.done .wl{color:var(--p2)}
+.p0 .brick.on{background:var(--p0-bg);border-color:var(--p0-line);color:var(--p0)}
+.p1 .brick.on{background:var(--p1-bg);border-color:var(--p1-line);color:var(--p1)}
+.p2 .brick.on{background:var(--p2-bg);border-color:var(--p2-line);color:var(--p2)}
+.p0 .brick.on .plabel{color:var(--p0)}
+.p1 .brick.on .plabel{color:var(--p1)}
+.p2 .brick.on .plabel{color:var(--p2)}
 
 .brick{
   border:1.5px solid var(--line);border-radius:10px;
@@ -101,6 +148,13 @@ h1{font-size:28px;font-weight:800;margin:6px 0 4px;letter-spacing:-0.5px}
 }
 .brick:hover{border-color:var(--line-strong);transform:translateY(-1px)}
 .brick.on{background:var(--key-bg);border-color:var(--key-line);color:var(--key)}
+.brick .plabel{
+  display:inline-block;font-size:11px;font-weight:700;
+  color:var(--ink-faint);background:#f0ebe0;
+  border-radius:6px;padding:1px 7px;margin-bottom:5px;
+}
+.brick.on .plabel{color:var(--key);background:var(--card)}
+.brick .ptext{display:block}
 .brick .kw{font-weight:800}
 .brick.on .kw{text-decoration:underline;text-underline-offset:2px}
 
@@ -140,6 +194,7 @@ footer{text-align:center;margin-top:32px;font-size:13px;color:var(--ink-faint)}
 <header>
   <div class="eyebrow">국어 · 글의 짜임 익히기</div>
   <h1>문단이 모여 한 편의 글이 돼요</h1>
+  <div class="rainbow"></div>
   <p class="sub">문단을 눌러 핵심어를 찾고, 처음·중간·끝을 요약해 전체 내용까지 완성해 보세요.</p>
 </header>
 
@@ -227,10 +282,11 @@ function buildView(key){
   d.walls.forEach((w,wi)=>{
     let bricks = "";
     w.bricks.forEach((b,bi)=>{
-      bricks += `<div class="brick" data-w="${wi}" data-b="${bi}">${b.pre}<span class="kw">${b.kw}</span>${b.post}</div>`;
+      const pnum = wi*2 + bi + 1;
+      bricks += `<div class="brick" data-w="${wi}" data-b="${bi}"><span class="plabel">문단 ${pnum}</span><span class="ptext">${b.pre}<span class="kw">${b.kw}</span>${b.post}</span></div>`;
     });
     wallsHtml += `
-      <div class="wall">
+      <div class="wall p${wi}">
         <div class="wsum" data-wsum="${wi}">
           <div class="wl">${w.label}</div>
           <div class="wr">${w.role}</div>
@@ -242,12 +298,13 @@ function buildView(key){
 
   const html = `
     <div class="how">${d.how}</div>
-    <div class="roof" data-roof>
-      <div class="rl" data-roofl>${d.roofLabel}</div>
-      <div class="rt" data-rooft>${d.roofLockText}</div>
+    <div class="house">
+      <div class="roof" data-roof>
+        <div class="rl" data-roofl>${d.roofLabel}</div>
+        <div class="rt" data-rooft>${d.roofLockText}</div>
+      </div>
+      <div class="walls">${wallsHtml}</div>
     </div>
-    <div class="down">▲</div>
-    <div class="walls">${wallsHtml}</div>
     <div class="panel">
       <div class="pt" data-pt>① 핵심어 찾기 → ② 문단 요약</div>
       <div class="pb hint" data-pb>문단을 누르면 반복되는 핵심어가 밑줄로 보여요. 한 부분(처음·중간·끝)의 문단을 모두 누르면 그 부분의 중심 내용이 채워집니다.</div>
@@ -273,6 +330,9 @@ function buildView(key){
     root.querySelectorAll("[data-dot]").forEach((el,i)=>{
       el.classList.toggle("on", state.done.has(i));
     });
+    root.querySelectorAll(".wall").forEach((el,i)=>{
+      el.classList.toggle("built", state.done.has(i));
+    });
     if(state.done.size===3){
       roof.classList.add("done");
       roofl.textContent = d.roofDoneLabel;
@@ -280,6 +340,10 @@ function buildView(key){
       pt.textContent = "③ 전체 "+d.unit+" 정리";
       pb.textContent = "처음·중간·끝 요약을 이으면 글 한 편의 "+d.unit+"이 됩니다.";
       pb.classList.remove("hint");
+    } else {
+      roof.classList.remove("done");
+      roofl.textContent = d.roofLabel;
+      rooft.textContent = d.roofLockText;
     }
   }
 
@@ -287,15 +351,30 @@ function buildView(key){
     brick.addEventListener("click",()=>{
       const wi = +brick.dataset.w, bi = +brick.dataset.b;
       const info = d.walls[wi].bricks[bi];
-      brick.classList.add("on");
-      state.clicked[wi].add(bi);
-      pt.textContent = "① 핵심어: "+info.kw;
-      pb.textContent = info.sent;
-      pb.classList.remove("hint");
-      if(state.clicked[wi].size===2 && !state.done.has(wi)){
-        state.done.add(wi);
-        root.querySelector(`[data-ws="${wi}"]`).textContent = d.walls[wi].summary;
-        root.querySelector(`[data-wsum="${wi}"]`).classList.add("done");
+
+      if(state.clicked[wi].has(bi)){
+        // 다시 누르면 선택 해제
+        brick.classList.remove("on");
+        state.clicked[wi].delete(bi);
+        if(state.done.has(wi)){
+          state.done.delete(wi);
+          root.querySelector(`[data-ws="${wi}"]`).textContent = "중심 내용 ?";
+          root.querySelector(`[data-wsum="${wi}"]`).classList.remove("done");
+        }
+        pt.textContent = "① 핵심어 찾기 → ② 문단 요약";
+        pb.textContent = "선택을 해제했어요. 다른 문단을 눌러 보세요.";
+      } else {
+        // 새로 선택
+        brick.classList.add("on");
+        state.clicked[wi].add(bi);
+        pt.textContent = "① 핵심어: "+info.kw;
+        pb.textContent = info.sent;
+        pb.classList.remove("hint");
+        if(state.clicked[wi].size===2 && !state.done.has(wi)){
+          state.done.add(wi);
+          root.querySelector(`[data-ws="${wi}"]`).textContent = d.walls[wi].summary;
+          root.querySelector(`[data-wsum="${wi}"]`).classList.add("done");
+        }
       }
       refresh();
     });
