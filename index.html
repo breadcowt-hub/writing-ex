@@ -155,6 +155,10 @@ h1{font-size:28px;font-weight:800;margin:6px 0 4px;letter-spacing:-0.5px}
 }
 .brick.on .plabel{color:var(--key);background:var(--card)}
 .brick .ptext{display:block}
+.brick .brick-sent{color:var(--ink)}
+.brick .brick-sum{display:none;font-weight:700}
+.brick.on .brick-sent{display:none}
+.brick.on .brick-sum{display:block}
 .brick .kw{font-weight:800}
 .brick.on .kw{text-decoration:underline;text-underline-offset:2px}
 
@@ -283,7 +287,11 @@ function buildView(key){
     let bricks = "";
     w.bricks.forEach((b,bi)=>{
       const pnum = wi*2 + bi + 1;
-      bricks += `<div class="brick" data-w="${wi}" data-b="${bi}"><span class="plabel">문단 ${pnum}</span><span class="ptext">${b.pre}<span class="kw">${b.kw}</span>${b.post}</span></div>`;
+      bricks += `<div class="brick" data-w="${wi}" data-b="${bi}">`
+        + `<span class="plabel">문단 ${pnum}</span>`
+        + `<span class="ptext brick-sent">${b.sent}</span>`
+        + `<span class="ptext brick-sum">${b.pre}<span class="kw">${b.kw}</span>${b.post}</span>`
+        + `</div>`;
     });
     wallsHtml += `
       <div class="wall p${wi}">
@@ -307,7 +315,7 @@ function buildView(key){
     </div>
     <div class="panel">
       <div class="pt" data-pt>① 핵심어 찾기 → ② 문단 요약</div>
-      <div class="pb hint" data-pb>문단을 누르면 반복되는 핵심어가 밑줄로 보여요. 한 부분(처음·중간·끝)의 문단을 모두 누르면 그 부분의 중심 내용이 채워집니다.</div>
+      <div class="pb hint" data-pb>문단마다 핵심 문장이 보여요. 문단을 누르면 핵심어만 남기고 요약돼요. 한 부분(처음·중간·끝)의 문단을 모두 요약하면 그 부분의 중심 내용이 채워집니다.</div>
     </div>
     <div class="bar">
       <div class="prog" data-prog>요약한 부분: 0 / 3</div>
@@ -361,14 +369,14 @@ function buildView(key){
           root.querySelector(`[data-ws="${wi}"]`).textContent = "중심 내용 ?";
           root.querySelector(`[data-wsum="${wi}"]`).classList.remove("done");
         }
-        pt.textContent = "① 핵심어 찾기 → ② 문단 요약";
-        pb.textContent = "선택을 해제했어요. 다른 문단을 눌러 보세요.";
+        pt.textContent = "요약 취소";
+        pb.textContent = "다시 원래 문장이 보여요. 다른 문단을 눌러 요약해 보세요.";
       } else {
         // 새로 선택
         brick.classList.add("on");
         state.clicked[wi].add(bi);
-        pt.textContent = "① 핵심어: "+info.kw;
-        pb.textContent = info.sent;
+        pt.textContent = "이 문단의 핵심 → "+info.kw;
+        pb.textContent = "문단을 눌러 핵심어만 남기고 요약했어요.";
         pb.classList.remove("hint");
         if(state.clicked[wi].size===2 && !state.done.has(wi)){
           state.done.add(wi);
@@ -392,7 +400,7 @@ function buildView(key){
     roofl.textContent = d.roofLabel;
     rooft.textContent = d.roofLockText;
     pt.textContent = "① 핵심어 찾기 → ② 문단 요약";
-    pb.textContent = "문단을 누르면 반복되는 핵심어가 밑줄로 보여요. 한 부분(처음·중간·끝)의 문단을 모두 누르면 그 부분의 중심 내용이 채워집니다.";
+    pb.textContent = "문단마다 핵심 문장이 보여요. 문단을 누르면 핵심어만 남기고 요약돼요. 한 부분(처음·중간·끝)의 문단을 모두 요약하면 그 부분의 중심 내용이 채워집니다.";
     pb.classList.add("hint");
     refresh();
   });
